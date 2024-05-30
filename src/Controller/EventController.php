@@ -73,7 +73,7 @@ class EventController extends AbstractController
         }
     }
 
-    #[Route('/events/delete/{id}', name: 'delete_event', methods: ['GET','DELETE'])]
+    #[Route('/events/{id}/delete', name: 'delete_event', methods: ['GET','DELETE'])]
     public function delete($id):JsonResponse
     {
      $event = $this->eventRepo->find($id);
