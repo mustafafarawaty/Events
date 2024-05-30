@@ -77,6 +77,9 @@ class EventController extends AbstractController
     public function delete($id):JsonResponse
     {
      $event = $this->eventRepo->find($id);
+     if (!$event) {
+            return $this->json(['error' => 'Event not found'], 404);
+        }
      $this->em->remove($event);
      $this->em->flush();
      return $this->json(['message'=>'Event Removed']);
