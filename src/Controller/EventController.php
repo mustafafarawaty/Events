@@ -84,7 +84,7 @@ class EventController extends AbstractController
         }
     }
 
-    #[Route('/events/delete/{id}', name: 'delete_event', methods: ['GET','DELETE'])]
+    #[Route('/events/{id}/delete', name: 'delete_event', methods: ['GET','DELETE'])]
     public function delete($id):JsonResponse
     {
         $user = $this->getUser();
@@ -93,6 +93,9 @@ class EventController extends AbstractController
         return $this->json(['error' => 'Unauthorized'], 401);
             }
      $event = $this->eventRepo->find($id);
+     if (!$event) {
+            return $this->json(['error' => 'Event not found'], 404);
+        }
      $this->em->remove($event);
      $this->em->flush();
      return $this->json(['message'=>'Event Removed']);
