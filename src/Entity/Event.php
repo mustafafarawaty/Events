@@ -32,6 +32,9 @@ class Event
     #[Assert\NotBlank()]
     private ?string $description = null;
 
+    #[ORM\ManyToOne(inversedBy: 'events')]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +77,18 @@ class Event
     public function setDescription(string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

@@ -23,6 +23,7 @@
         "symfony/flex": "^2",
         "symfony/form": "7.0.*",
         "symfony/framework-bundle": "7.0.*",
+        "symfony/monolog-bundle": "^3.10",
         "symfony/property-access": "7.0.*",
         "symfony/property-info": "7.0.*",
         "symfony/runtime": "7.0.*",
@@ -85,6 +86,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.6",
+        "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^11.1",
         "symfony/browser-kit": "7.0.*",
         "symfony/css-selector": "7.0.*",

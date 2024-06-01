@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Entity\Event;
+use App\Entity\User;
 use App\Form\EventFormType;
 use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,14 +26,15 @@ class EventService
 
     }
 
-    public function createEvent(Request $request): array
+    public function createEvent(Request $request, User $user): array
     {
         $event = new Event();
         $form = $this->formFactory->create(EventFormType::class, $event);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->persist($form->getData());
+            $event->setUser($user);
+            $this->em->persist($event);
             $this->em->flush();
             return ['success' => true];
         }

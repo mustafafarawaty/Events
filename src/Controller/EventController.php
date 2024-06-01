@@ -19,6 +19,7 @@ class EventController extends AbstractController
     private $eventRepo;
     private $eventService;
 
+
     public function __construct(EventService $eventService,EntityManagerInterface $em,EventRepository $eventRepo) {
         $this->em = $em;
         $this->eventRepo = $eventRepo;
@@ -35,7 +36,12 @@ class EventController extends AbstractController
     #[Route('/events/create', name: 'create_event', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
-        $result = $this->eventService->createEvent($request);
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->json(['error' => 'Unauthorized'], 401);
+        }
+        $result = $this->eventService->createEvent($request, $user);
 
         if ($result['success']) {
             return $this->json(['data' => 'Event Created'], 201);
@@ -59,6 +65,11 @@ class EventController extends AbstractController
     #[Route('/events/{id}/edit', name: 'edit_event', methods: ['PUT', 'PATCH'])]
     public function edit(int $id, Request $request): JsonResponse
     {
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->json(['error' => 'Unauthorized'], 401);
+        }
         $event = $this->eventRepo->find($id);
         if (!$event) {
             return $this->json(['error' => 'Event not found'], 404);
@@ -76,9 +87,16 @@ class EventController extends AbstractController
     #[Route('/events/delete/{id}', name: 'delete_event', methods: ['GET','DELETE'])]
     public function delete($id):JsonResponse
     {
+        $user = $this->getUser();
+
+     if (!$user) {
+        return $this->json(['error' => 'Unauthorized'], 401);
+            }
      $event = $this->eventRepo->find($id);
      $this->em->remove($event);
      $this->em->flush();
      return $this->json(['message'=>'Event Removed']);
     }
+
+
 }
